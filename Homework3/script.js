@@ -65,5 +65,3 @@ function mostFrequent(arr) {
 
   return most;
 }
-
-console.log(mostFrequent([1, 2, 3, 5, 7, 8, 5]));
