@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "name": "Khvicha Kvaratskhelia",
+    "nation": "georgia",
+    "position": "winger"
+  },
+  {
+    "id": 2,
+    "name": "Giorgi Mamardashvili",
+    "nation": "georgia",
+    "position": "goalkeeper"
+  },
+  {
+    "id": 3,
+    "name": "Giorgi Chakvetadze",
+    "nation": "georgia",
+    "position": "midfielder"
+  },
+  {
+    "id": 4,
+    "name": "Jamal Musiala",
+    "nation": "germany",
+    "position": "midfielder"
+  },
+  {
+    "id": 5,
+    "name": "Joshua Kimmich",
+    "nation": "germany",
+    "position": "midfielder"
+  },
+  {
+    "id": 6,
+    "name": "Antonio Rudiger",
+    "nation": "germany",
+    "position": "defender"
+  },
+  {
+    "id": 7,
+    "name": "Kylian Mbappe",
+    "nation": "france",
+    "position": "forward"
+  },
+  {
+    "id": 8,
+    "name": "Ousmane Dembele",
+    "nation": "france",
+    "position": "winger"
+  },
+  {
+    "id": 9,
+    "name": "Aurelien Tchouameni",
+    "nation": "france",
+    "position": "midfielder"
+  },
+  { "id": 10, "name": "Lamine Yamal", "nation": "spain", "position": "winger" },
+  { "id": 11, "name": "Pedri", "nation": "spain", "position": "midfielder" },
+  { "id": 12, "name": "Rodri", "nation": "spain", "position": "midfielder" },
+  {
+    "id": 14,
+    "name": "Bruno Fernandes",
+    "nation": "portugal",
+    "position": "midfielder"
+  },
+  {
+    "id": 15,
+    "name": "Rafael Leao",
+    "nation": "portugal",
+    "position": "winger"
+  },
+  {
+    "id": 16,
+    "name": "Lionel Messi",
+    "nation": "argentina",
+    "position": "forward"
+  },
+  {
+    "id": 17,
+    "name": "Julian Alvarez",
+    "nation": "argentina",
+    "position": "forward"
+  },
+  {
+    "id": 18,
+    "name": "Enzo Fernandez",
+    "nation": "argentina",
+    "position": "midfielder"
+  },
+  {
+    "id": 19,
+    "name": "Vinicius Junior",
+    "nation": "brazil",
+    "position": "winger"
+  },
+  { "id": 20, "name": "Raphinha", "nation": "brazil", "position": "winger" },
+  {
+    "id": 21,
+    "name": "Alisson Becker",
+    "nation": "brazil",
+    "position": "goalkeeper"
+  },
+  {
+    "id": 22,
+    "name": "Harry Kane",
+    "nation": "england",
+    "position": "forward"
+  },
+  {
+    "id": 23,
+    "name": "Jude Bellingham",
+    "nation": "england",
+    "position": "midfielder"
+  },
+  {
+    "id": 24,
+    "name": "Bukayo Saka",
+    "nation": "england",
+    "position": "winger"
+  },
+  {
+    "id": 25,
+    "name": "Erling Haaland",
+    "nation": "norway",
+    "position": "forward"
+  },
+  {
+    "id": 26,
+    "name": "Martin Odegaard",
+    "nation": "norway",
+    "position": "midfielder"
+  },
+  {
+    "id": 27,
+    "name": "Kevin De Bruyne",
+    "nation": "belgium",
+    "position": "midfielder"
+  },
+  {
+    "id": 28,
+    "name": "Romelu Lukaku",
+    "nation": "belgium",
+    "position": "forward"
+  },
+  {
+    "id": 29,
+    "name": "Luka Modric",
+    "nation": "croatia",
+    "position": "midfielder"
+  },
+  {
+    "id": 30,
+    "name": "Josko Gvardiol",
+    "nation": "croatia",
+    "position": "defender"
+  },
+  {
+    "id": 31,
+    "name": "Viktoria Kazarovi",
+    "nation": "georgia",
+    "position": "forward"
+  }
+]
