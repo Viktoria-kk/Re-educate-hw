@@ -1,0 +1,28 @@
+{
+  "name": "re-educate-hw",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "todo-cli": "/homework12/todo.js",
+    "weather-cli": "/homework12/weather.js"
+  },
+  "scripts": {
+    "start": "node --watch main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Viktoria-kk/Re-educate-hw.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Viktoria-kk/Re-educate-hw/issues"
+  },
+  "homepage": "https://github.com/Viktoria-kk/Re-educate-hw#readme",
+  "description": "",
+  "dependencies": {
+    "commander": "^15.0.0"
+  }
+}
