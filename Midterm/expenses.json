@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "category": "shopping",
+    "price": 50,
+    "createdAt": "2026-06-19T13:36:12.472Z"
+  },
+  {
+    "id": 3,
+    "category": "education",
+    "price": 140,
+    "createdAt": "2026-06-19T14:30:37.678Z"
+  },
+  {
+    "id": 4,
+    "category": "shopping",
+    "price": 13,
+    "createdAt": "2026-06-19T14:53:59.536Z"
+  },
+  {
+    "id": 5,
+    "category": "groceries",
+    "price": 40,
+    "createdAt": "2026-06-19T15:11:44.089Z"
+  },
+  {
+    "id": 6,
+    "category": "shopping",
+    "price": 70,
+    "createdAt": "2026-06-19T15:11:58.004Z"
+  },
+  {
+    "id": 7,
+    "category": "haircut",
+    "price": 30,
+    "createdAt": "2026-06-19T15:13:08.244Z"
+  }
+]
