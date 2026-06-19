@@ -1,0 +1,20 @@
+[
+  {
+    "id": 2,
+    "category": "education",
+    "price": 130,
+    "createdAt": "2026-06-19T17:54:53.991Z"
+  },
+  {
+    "id": 3,
+    "category": "selfcare",
+    "price": 100,
+    "createdAt": "2026-06-19T17:55:02.789Z"
+  },
+  {
+    "id": 4,
+    "category": "shopping",
+    "price": 170,
+    "createdAt": "2026-06-19T17:55:09.572Z"
+  }
+]
