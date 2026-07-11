@@ -1,0 +1,16 @@
+{
+  "name": "midterm1-expenses-crud",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.5",
+    "prettier-plugin-ejs": "^1.0.3"
+  }
+}

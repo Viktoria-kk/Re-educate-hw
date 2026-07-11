@@ -1,0 +1,20 @@
+<%- include('../partials/header.ejs') %>
+<section class="details-card">
+  <span class="eyebrow">Expense details</span
+  ><span class="category"><%= expense.category %></span>
+  <h1 class="amount">
+    <span class="currency">$</span><%= expense.price.toFixed(2) %>
+  </h1>
+  <p>
+    Created on <%= new Date(expense.createdAt).toLocaleString() %> · ID: <%=
+    expense.id %>
+  </p>
+  <div class="form-actions">
+    <a class="button-link" href="/expenses/<%= expense.id %>/update"
+      >Edit expense</a
+    ><a class="delete-link" href="/api/expenses/<%= expense.id %>/delete"
+      >Delete</a
+    ><a href="/">Back to overview</a>
+  </div>
+</section>
+<%- include('../partials/footer.ejs') %>

@@ -1,0 +1,77 @@
+<%- include('../partials/header.ejs') %>
+
+<section class="dashboard-intro">
+  <div class="intro-copy">
+    <span class="eyebrow">Expense tracking</span>
+    <h1>Expense overview</h1>
+    <p>View, filter and manage your recorded expenses.</p>
+  </div>
+  <div class="summary-grid">
+    <article class="summary-card count-card">
+      <span>Expenses</span><strong><%= expenses.length %></strong
+      ><small>records shown</small>
+    </article>
+    <article class="summary-card total-card">
+      <span>Total amount</span
+      ><strong class="amount"
+        ><span class="currency">$</span><%= expenses.reduce((sum, expense) =>
+        sum + expense.price, 0).toFixed(2) %></strong
+      ><small>for current results</small>
+    </article>
+  </div>
+</section>
+
+<section class="controls">
+  <div>
+    <h2>Recent expenses</h2>
+    <p>
+      <%= category ? `Showing results for “${category}”` : 'All categories' %>
+    </p>
+  </div>
+  <form class="search-form" action="/" method="GET">
+    <input
+      id="category"
+      name="category"
+      value="<%= category %>"
+      placeholder="Filter by category"
+      aria-label="Filter by category"
+    />
+    <button type="submit">Search</button>
+    <% if (category) { %><a href="/">Clear</a><% } %>
+  </form>
+</section>
+
+<section class="expense-grid">
+  <% if (!expenses.length) { %>
+  <div class="empty-state">
+    <h2>No expenses found</h2>
+    <p>Try another category or add a new expense.</p>
+  </div>
+  <% } %>
+  <% expenses.forEach((expense, index) => { %>
+  <article class="expense-card card-<%= index % 3 %>">
+    <div class="card-top">
+      <span class="expense-number">0<%= expense.id %></span
+      ><span class="category"><%= expense.category %></span>
+    </div>
+    <div class="card-amount">
+      <span>Amount</span
+      ><strong class="amount"
+        ><span class="currency">$</span><%= expense.price.toFixed(2) %></strong
+      >
+    </div>
+    <div class="card-bottom">
+      <time><%= new Date(expense.createdAt).toLocaleDateString() %></time>
+      <div class="card-actions">
+        <a href="/expenses/<%= expense.id %>">Details</a
+        ><a href="/expenses/<%= expense.id %>/update">Edit</a
+        ><a class="delete-link" href="/api/expenses/<%= expense.id %>/delete"
+          >Delete</a
+        >
+      </div>
+    </div>
+  </article>
+  <% }) %>
+</section>
+
+<%- include('../partials/footer.ejs') %>
