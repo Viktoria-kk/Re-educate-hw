@@ -1,0 +1,28 @@
+{
+  "name": "homework20-backend",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "build": "node --check src/server.js",
+    "dev": "concurrently --kill-others-on-fail --names backend,frontend --prefix-colors magenta,cyan \"npm run dev:server\" \"npm --prefix ../frontend run dev\"",
+    "dev:server": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "seed": "node src/seed/seed-quizzes.js"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^4.21.2",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^8.9.5",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "nodemon": "^3.1.14"
+  }
+}

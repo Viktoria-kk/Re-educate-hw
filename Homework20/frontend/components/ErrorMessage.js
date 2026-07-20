@@ -1,0 +1,1 @@
+export default function ErrorMessage({ message, retry }) { return <div className="state error-state"><h2>We hit a small snag</h2><p>{message}</p>{retry && <button className="button primary" onClick={retry}>Try again</button>}</div>; }

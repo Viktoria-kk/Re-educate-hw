@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function QuizCard({ quiz, index }) { return <article className="quiz-card"><div className={`quiz-art art-${index % 5}`}><span>{String(index + 1).padStart(2, "0")}</span></div><div className="quiz-content"><span className="topic">{quiz.topic}</span><h2>{quiz.title}</h2><p>{quiz.description}</p><div className="card-foot"><span>{quiz.questions.length} questions</span><Link className="button primary" href={`/quizzes/${quiz._id}`}>Start quiz</Link></div></div></article>; }
