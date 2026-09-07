@@ -1,0 +1,40 @@
+{
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
+  "rootDir": "..",
+  "testEnvironment": "node",
+  "testMatch": [
+    "<rootDir>/src/**/*.service.spec.ts"
+  ],
+  "extensionsToTreatAsEsm": [
+    ".ts"
+  ],
+  "transform": {
+    "^.+\\.ts$": [
+      "ts-jest",
+      {
+        "useESM": true,
+        "tsconfig": {
+          "module": "ESNext",
+          "moduleResolution": "bundler"
+        }
+      }
+    ]
+  },
+  "collectCoverageFrom": [
+    "src/**/*.service.ts"
+  ],
+  "coverageDirectory": "coverage",
+  "coverageProvider": "v8",
+  "coverageThreshold": {
+    "global": {
+      "statements": 100,
+      "branches": 90,
+      "functions": 100,
+      "lines": 100
+    }
+  }
+}
