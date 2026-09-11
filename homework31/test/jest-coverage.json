@@ -1,0 +1,18 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": "..",
+  "testEnvironment": "node",
+  "testMatch": ["<rootDir>/src/**/*.spec.ts", "<rootDir>/test/**/*.e2e-spec.ts"],
+  "extensionsToTreatAsEsm": [".ts"],
+  "transform": {
+    "^.+\\.ts$": ["ts-jest", { "useESM": true, "tsconfig": { "module": "ESNext", "moduleResolution": "bundler" } }]
+  },
+  "collectCoverageFrom": ["src/**/*.service.ts", "src/photos/image-upload.ts", "src/photos/photos.interceptor.ts"],
+  "coverageDirectory": "coverage",
+  "coverageProvider": "v8",
+  "coverageThreshold": {
+    "global": { "statements": 90, "branches": 80, "functions": 90, "lines": 90 },
+    "./src/movies/movies.service.ts": { "statements": 100, "branches": 90, "functions": 100, "lines": 100 },
+    "./src/directors/directors.service.ts": { "statements": 100, "branches": 90, "functions": 100, "lines": 100 }
+  }
+}
