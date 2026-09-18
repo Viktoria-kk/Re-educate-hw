@@ -1,0 +1,39 @@
+{
+  "name": "midterm3",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "nest build",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:prod": "node dist/main",
+    "check:schema": "npm run build && node scripts/check-schema.cjs",
+    "check:routes": "npm run build && node scripts/check-routes.cjs"
+  },
+  "dependencies": {
+    "@apollo/server": "^5.0.0",
+    "@as-integrations/express5": "^1.0.0",
+    "@nestjs/apollo": "^13.0.0",
+    "@nestjs/common": "^11.0.1",
+    "@nestjs/config": "^4.0.4",
+    "@nestjs/core": "^11.0.1",
+    "@nestjs/graphql": "^13.0.0",
+    "@nestjs/jwt": "^11.0.0",
+    "@nestjs/mongoose": "^11.0.4",
+    "@nestjs/platform-express": "^11.0.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.4",
+    "graphql": "^16.0.0",
+    "mongoose": "^9.0.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.0",
+    "@nestjs/schematics": "^11.0.0",
+    "@nestjs/testing": "^11.0.1",
+    "@types/node": "^24.0.0",
+    "mongodb-memory-server": "^11.2.0",
+    "typescript": "^5.7.3"
+  }
+}
