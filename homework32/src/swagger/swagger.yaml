@@ -1,0 +1,542 @@
+openapi: 3.0.3
+info:
+  title: Movies API with Authentication
+  version: 2.0.0
+  description: Manage directors, movies, users, OTP verification, and transactional emails.
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Health
+  - name: Directors
+  - name: Movies
+  - name: Authentication
+  - name: Users
+paths:
+  /:
+    get:
+      tags: [Health]
+      summary: Get the API greeting
+      responses:
+        '200':
+          description: Greeting returned successfully.
+          content:
+            text/plain:
+              schema: { type: string, example: Hello World! }
+  /directors:
+    post:
+      tags: [Directors]
+      summary: Create a director
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CreateDirector' }
+      responses:
+        '201':
+          description: Director created.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Director' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+    get:
+      tags: [Directors]
+      summary: List directors
+      description: Results are paginated and can be filtered by name, nationality, and birth-year range.
+      parameters:
+        - { $ref: '#/components/parameters/DirectorName' }
+        - { $ref: '#/components/parameters/Nationality' }
+        - { $ref: '#/components/parameters/BirthYearFrom' }
+        - { $ref: '#/components/parameters/BirthYearTo' }
+        - { $ref: '#/components/parameters/Page' }
+        - { $ref: '#/components/parameters/Limit' }
+      responses:
+        '200':
+          description: Paginated directors list.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/DirectorPage' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+  /auth/sign-up:
+    post:
+      tags: [Authentication]
+      summary: Register and send a six-digit OTP by email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/SignUp' }
+      responses:
+        '201': { $ref: '#/components/responses/EmailSent' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /auth/sign-in:
+    post:
+      tags: [Authentication]
+      summary: Sign in an active, verified user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/SignIn' }
+      responses:
+        '200':
+          description: Signed in successfully.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AuthToken' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /auth/verify:
+    post:
+      tags: [Authentication]
+      summary: Verify an OTP and send the Welcome email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/VerifyOtp' }
+      responses:
+        '200':
+          description: Email verified successfully.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AuthToken' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /auth/resend-verification:
+    post:
+      tags: [Authentication]
+      summary: Send a new OTP after the old code expires
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email: { type: string, format: email }
+      responses:
+        '200': { $ref: '#/components/responses/EmailSent' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /users/me:
+    get:
+      tags: [Users]
+      summary: Get the authenticated user
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Current user.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/User' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    delete:
+      tags: [Users]
+      summary: Deactivate the authenticated user and email a notification
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Account deactivated and notification email sent.
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/UserNotFound' }
+  /directors/{id}:
+    parameters: [{ $ref: '#/components/parameters/Id' }]
+    get:
+      tags: [Directors]
+      summary: Get a director by ID
+      responses:
+        '200':
+          description: Director with associated films.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Director' }
+        '404': { $ref: '#/components/responses/DirectorNotFound' }
+    patch:
+      tags: [Directors]
+      summary: Update a director
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/UpdateDirector' }
+      responses:
+        '200':
+          description: Updated director.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Director' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+        '404': { $ref: '#/components/responses/DirectorNotFound' }
+    delete:
+      tags: [Directors]
+      summary: Delete a director
+      description: Also deletes the profile photo and all images belonging to this director's movies.
+      responses:
+        '200':
+          description: Deleted director.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Director' }
+        '404': { $ref: '#/components/responses/DirectorNotFound' }
+  /directors/{id}/profile-photo:
+    parameters: [{ $ref: '#/components/parameters/Id' }]
+    post:
+      tags: [Directors]
+      summary: Upload or replace a director profile photo
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [photo]
+              properties:
+                photo:
+                  type: string
+                  format: binary
+                  description: JPEG, PNG, WebP, or GIF; up to 5 MB.
+      responses:
+        '201':
+          description: Director with the new profilePhotoUrl.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Director' }
+        '404': { $ref: '#/components/responses/DirectorNotFound' }
+    delete:
+      tags: [Directors]
+      summary: Delete a director profile photo
+      responses:
+        '200':
+          description: Director without a profile photo.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Director' }
+        '404': { $ref: '#/components/responses/DirectorNotFound' }
+  /movies:
+    post:
+      tags: [Movies]
+      summary: Create a movie
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CreateMovie' }
+      responses:
+        '201':
+          description: Movie created.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Movie' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+    get:
+      tags: [Movies]
+      summary: List movies
+      description: Results are paginated and can be filtered by title, genre, and release-year range.
+      parameters:
+        - { $ref: '#/components/parameters/MovieName' }
+        - { $ref: '#/components/parameters/Genre' }
+        - { $ref: '#/components/parameters/YearFrom' }
+        - { $ref: '#/components/parameters/YearTo' }
+        - { $ref: '#/components/parameters/Page' }
+        - { $ref: '#/components/parameters/Limit' }
+      responses:
+        '200':
+          description: Paginated movies list.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MoviePage' }
+        '400': { $ref: '#/components/responses/ValidationError' }
+  /movies/{id}:
+    parameters: [{ $ref: '#/components/parameters/Id' }]
+    get:
+      tags: [Movies]
+      summary: Get a movie by ID
+      responses:
+        '200':
+          description: Movie with its director.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Movie' }
+        '404': { $ref: '#/components/responses/MovieNotFound' }
+    patch:
+      tags: [Movies]
+      summary: Update a movie
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/UpdateMovie' }
+      responses:
+        '200':
+          description: Updated movie.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Movie' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/MovieNotFound' }
+    delete:
+      tags: [Movies]
+      summary: Delete a movie
+      description: Also deletes all movie images from storage.
+      responses:
+        '200':
+          description: Deleted movie.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Movie' }
+        '404': { $ref: '#/components/responses/MovieNotFound' }
+  /movies/{id}/images:
+    parameters: [{ $ref: '#/components/parameters/Id' }]
+    post:
+      tags: [Movies]
+      summary: Upload movie images
+      description: Upload one to ten JPEG, PNG, WebP, or GIF files; each may be up to 5 MB.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [images]
+              properties:
+                images:
+                  type: array
+                  minItems: 1
+                  maxItems: 10
+                  items: { type: string, format: binary }
+      responses:
+        '201':
+          description: Movie with uploaded image URLs.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Movie' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/MovieNotFound' }
+    delete:
+      tags: [Movies]
+      summary: Delete one movie image
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [key]
+              properties:
+                key:
+                  type: string
+                  example: movies/4c314f76-36c7-49f8-ab6e-61554ba2c2f7/images/poster.jpg
+      responses:
+        '200':
+          description: Movie with remaining image URLs.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Movie' }
+        '404': { $ref: '#/components/responses/MovieNotFound' }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: Resource UUID.
+      schema: { type: string, format: uuid }
+    Page:
+      name: page
+      in: query
+      schema: { type: integer, minimum: 1, default: 1 }
+    Limit:
+      name: limit
+      in: query
+      schema: { type: integer, minimum: 1, maximum: 100, default: 10 }
+    DirectorName: { name: name, in: query, schema: { type: string } }
+    Nationality: { name: nationality, in: query, schema: { type: string } }
+    BirthYearFrom:
+      {
+        name: birthYearFrom,
+        in: query,
+        schema: { type: integer, minimum: 1800 },
+      }
+    BirthYearTo:
+      { name: birthYearTo, in: query, schema: { type: integer, minimum: 1800 } }
+    MovieName:
+      {
+        name: name,
+        in: query,
+        description: Partial movie title.,
+        schema: { type: string },
+      }
+    Genre: { name: genre, in: query, schema: { type: string } }
+    YearFrom:
+      { name: yearFrom, in: query, schema: { type: integer, minimum: 1888 } }
+    YearTo:
+      { name: yearTo, in: query, schema: { type: integer, minimum: 1888 } }
+  responses:
+    ValidationError:
+      description: Request validation failed.
+      content:
+        application/json: { schema: { $ref: '#/components/schemas/Error' } }
+    BadRequest:
+      description: Invalid request or a referenced resource does not exist.
+      content:
+        application/json: { schema: { $ref: '#/components/schemas/Error' } }
+    DirectorNotFound:
+      description: Director or profile photo was not found.
+      content:
+        application/json: { schema: { $ref: '#/components/schemas/Error' } }
+    MovieNotFound:
+      description: Movie or movie image was not found.
+      content:
+        application/json: { schema: { $ref: '#/components/schemas/Error' } }
+    UserNotFound:
+      description: User was not found or is already inactive.
+      content:
+        application/json: { schema: { $ref: '#/components/schemas/Error' } }
+    Unauthorized:
+      description: Authentication failed or the Bearer token is invalid.
+      content:
+        application/json: { schema: { $ref: '#/components/schemas/Error' } }
+    EmailSent:
+      description: Request accepted and an email was sent.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success: { type: boolean, example: true }
+              message: { type: string }
+  schemas:
+    SignUp:
+      type: object
+      required: [email, fullName, password]
+      properties:
+        email: { type: string, format: email, example: user@example.com }
+        fullName: { type: string, minLength: 2, example: Test User }
+        password:
+          { type: string, format: password, minLength: 8, example: password123 }
+    SignIn:
+      type: object
+      required: [email, password]
+      properties:
+        email: { type: string, format: email, example: user@example.com }
+        password:
+          { type: string, format: password, minLength: 8, example: password123 }
+    VerifyOtp:
+      type: object
+      required: [email, otpCode]
+      properties:
+        email: { type: string, format: email, example: user@example.com }
+        otpCode: { type: string, pattern: '^\\d{6}$', example: '123456' }
+    AuthToken:
+      type: object
+      required: [accessToken]
+      properties:
+        accessToken: { type: string }
+    User:
+      type: object
+      required: [id, email, fullName, isVerified, isActive, createdAt]
+      properties:
+        id: { type: string, format: uuid }
+        email: { type: string, format: email }
+        fullName: { type: string }
+        isVerified: { type: boolean }
+        isActive: { type: boolean }
+        deactivatedAt: { type: string, format: date-time, nullable: true }
+        createdAt: { type: string, format: date-time }
+    CreateDirector:
+      type: object
+      required: [name, birthYear, nationality]
+      properties:
+        name: { type: string, minLength: 1, example: Christopher Nolan }
+        birthYear:
+          { type: integer, minimum: 1800, maximum: 2026, example: 1970 }
+        nationality: { type: string, minLength: 1, example: British }
+    UpdateDirector:
+      type: object
+      properties:
+        name: { type: string, minLength: 1, example: Christopher Nolan }
+        birthYear:
+          { type: integer, minimum: 1800, maximum: 2026, example: 1970 }
+        nationality: { type: string, minLength: 1, example: British }
+    CreateMovie:
+      type: object
+      required: [title, genre, releaseYear, directorId]
+      properties:
+        title: { type: string, minLength: 1, example: Inception }
+        genre: { type: string, minLength: 1, example: Science fiction }
+        releaseYear:
+          { type: integer, minimum: 1888, maximum: 2036, example: 2010 }
+        directorId:
+          {
+            type: string,
+            format: uuid,
+            example: 4c314f76-36c7-49f8-ab6e-61554ba2c2f7,
+          }
+    UpdateMovie:
+      type: object
+      properties:
+        title: { type: string, minLength: 1, example: Inception }
+        genre: { type: string, minLength: 1, example: Science fiction }
+        releaseYear:
+          { type: integer, minimum: 1888, maximum: 2036, example: 2010 }
+        directorId: { type: string, format: uuid }
+    DirectorSummary:
+      type: object
+      required: [id, name, birthYear, nationality]
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string, example: Christopher Nolan }
+        birthYear: { type: integer, example: 1970 }
+        nationality: { type: string, example: British }
+    MovieSummary:
+      type: object
+      required: [id, title, genre, releaseYear]
+      properties:
+        id: { type: string, format: uuid }
+        title: { type: string, example: Inception }
+        genre: { type: string, example: Science fiction }
+        releaseYear: { type: integer, example: 2010 }
+    Director:
+      allOf:
+        - { $ref: '#/components/schemas/DirectorSummary' }
+        - type: object
+          properties:
+            profilePhotoUrl: { type: string, format: uri, nullable: true }
+            films:
+              type: array
+              items: { $ref: '#/components/schemas/MovieSummary' }
+    Movie:
+      allOf:
+        - { $ref: '#/components/schemas/MovieSummary' }
+        - type: object
+          required: [director]
+          properties:
+            director: { $ref: '#/components/schemas/DirectorSummary' }
+            imageKeys: { type: array, items: { type: string } }
+            imageUrls: { type: array, items: { type: string, format: uri } }
+    DirectorPage:
+      type: object
+      required: [data, total, page, limit]
+      properties:
+        data: { type: array, items: { $ref: '#/components/schemas/Director' } }
+        total: { type: integer, minimum: 0, example: 1 }
+        page: { type: integer, example: 1 }
+        limit: { type: integer, example: 10 }
+    MoviePage:
+      type: object
+      required: [data, total, page, limit]
+      properties:
+        data: { type: array, items: { $ref: '#/components/schemas/Movie' } }
+        total: { type: integer, minimum: 0, example: 1 }
+        page: { type: integer, example: 1 }
+        limit: { type: integer, example: 10 }
+    Error:
+      type: object
+      required: [statusCode, message, error]
+      properties:
+        statusCode: { type: integer, example: 404 }
+        message: { type: string, example: Director not found }
+        error: { type: string, example: Not Found }
